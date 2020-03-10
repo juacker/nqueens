@@ -1,13 +1,27 @@
 <template>
-  <div class="hero is-fullheight">
-    <b-field label="N value">
-		<b-numberinput controls-position="compact" size="is_small" v-model="dim" min=2 max=12 :editable="false" type="is-light" ></b-numberinput>
-    </b-field>
-    <b-field>
+    <div>
+    <b-navbar :close-on-click="false">
+        <template slot="brand">
+            <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                <img
+                    src="../assets/logo.png"
+                    alt="Lightweight UI components for Vue.js based on Bulma"
+                >
+                <strong>N queens</strong>
+            </b-navbar-item>
+        </template>
+        <template slot="start">
+            <b-navbar-item tag="div">
+                <div class="buttons">
+        <b-numberinput controls-position="compact" size="is_small" v-model="dim" min=2 max=12 :editable="false" type="is-light" ></b-numberinput>
         <b-button type="button" @click="reset" size="is_small" icon-left="delete" title="reset">Reset</b-button>
         <b-button type="button" @click="undo" size="is_small" icon-left="undo" title="undo">Undo</b-button>
         <b-button type="button" @click="solve" size="is_small" icon-left="help" title="solve">Solve</b-button>
-    </b-field>
+                </div>
+            </b-navbar-item>
+        </template>
+    </b-navbar>
+  <div class="hero is-fullheight">
     <b-field >
         <p v-if="solutions.length>0">
           showing solution {{solution+1}} of {{solutions.length}} 
@@ -15,7 +29,7 @@
         <b-button v-if="solutions.length>0" @click="prevSolution" :disabled="solution==0" icon-left="arrow-left"></b-button>
         <b-button v-if="solutions.length>0" @click="nextSolution" :disabled="solution==solutions.length-1" icon-left="arrow-right"></b-button>
     </b-field>
-    <div class="hero-body is-fullheight">
+    <div class="hero-body" style="{align-items:'flex-start'}">
       <table class="board">
         <tr v-for="(row,i) in squares" :key="i" class="row">
             <td v-for="(square,j) in row" :key="j" :class="square.class" @click="squareClick(i,j)"/>
@@ -23,6 +37,7 @@
       </table>
     </div>
   </div>
+    </div>
 </template>
 
 <script>
@@ -242,9 +257,9 @@ export default {
 
 .board {
   width: 90%;
-  height: 80%;
+  height: 70%;
   max-width: 80vh; 
-  max-height: 100vw; 
+  max-height: 90vw; 
   position: absolute;
 }
 
