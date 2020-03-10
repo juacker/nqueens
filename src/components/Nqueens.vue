@@ -1,43 +1,40 @@
 <template>
-    <div>
+  <div>
     <b-navbar :close-on-click="false">
-        <template slot="brand">
-            <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                <img
-                    src="../assets/logo.png"
-                    alt="Lightweight UI components for Vue.js based on Bulma"
-                >
-                <strong>N queens</strong>
-            </b-navbar-item>
-        </template>
-        <template slot="start">
-            <b-navbar-item tag="div">
-                <div class="buttons">
-        <b-numberinput controls-position="compact" size="is_small" v-model="dim" min=2 max=12 :editable="false" type="is-light" ></b-numberinput>
-        <b-button type="button" @click="reset" size="is_small" icon-left="delete" title="reset">Reset</b-button>
-        <b-button type="button" @click="undo" size="is_small" icon-left="undo" title="undo">Undo</b-button>
-        <b-button type="button" @click="solve" size="is_small" icon-left="help" title="solve">Solve</b-button>
-                </div>
-            </b-navbar-item>
-        </template>
+      <template slot="brand">
+        <b-navbar-item>
+          <img src="../assets/logo.png" >
+          <strong>N-queens</strong>
+        </b-navbar-item>
+      </template>
+      <template slot="start">
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <b-numberinput controls-position="compact" size="is_small" v-model="dim" min=2 max=12 :editable="false" type="is-light" />
+            <b-button type="button" @click="reset" size="is_small" icon-left="delete" title="reset">Reset</b-button>
+            <b-button type="button" @click="undo" size="is_small" icon-left="undo" title="undo">Undo</b-button>
+            <b-button type="button" @click="solve" size="is_small" icon-left="help" title="solve">Solve</b-button>
+          </div>
+        </b-navbar-item>
+      </template>
     </b-navbar>
-  <div class="hero is-fullheight">
-    <b-field >
+    <div class="hero is-fullheight">
+      <b-field >
+        <b-button v-if="solutions.length>0" @click="prevSolution" :disabled="solution==0" icon-left="arrow-left" />
+        <b-button v-if="solutions.length>0" @click="nextSolution" :disabled="solution==solutions.length-1" icon-left="arrow-right" />
         <p v-if="solutions.length>0">
-          showing solution {{solution+1}} of {{solutions.length}} 
+          showing solution {{solution+1}} of {{solutions.length}}
         </p>
-        <b-button v-if="solutions.length>0" @click="prevSolution" :disabled="solution==0" icon-left="arrow-left"></b-button>
-        <b-button v-if="solutions.length>0" @click="nextSolution" :disabled="solution==solutions.length-1" icon-left="arrow-right"></b-button>
-    </b-field>
-    <div class="hero-body" style="{align-items:'flex-start'}">
-      <table class="board">
-        <tr v-for="(row,i) in squares" :key="i" class="row">
-            <td v-for="(square,j) in row" :key="j" :class="square.class" @click="squareClick(i,j)"/>
-        </tr>
-      </table>
+      </b-field>
+      <div class="hero-body" style="{align-items:'flex-start'}">
+        <table class="board">
+          <tr v-for="(row,i) in squares" :key="i" class="row">
+            <td v-for="(square,j) in row" :key="j" :class="square" @click="squareClick(i,j)"/>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
-    </div>
 </template>
 
 <script>
@@ -59,7 +56,7 @@ export default {
       for (var i = 0; i < this.dim; i++) {
         x[i] = new Array(this.dim);
         for (var j = 0; j < this.dim; j++) {
-          x[i][j] = {class: "empty"}
+          x[i][j] = "empty"
         }
       }
 
@@ -69,12 +66,12 @@ export default {
 
         // columns
         for (var col = 0; col < this.dim; col++) {
-          x[queen.row][col].class = "forbidden"
+          x[queen.row][col] = "forbidden"
         }
 
         // rows
         for (var row = 0; row < this.dim; row++) {
-          x[row][queen.col].class = "forbidden"
+          x[row][queen.col] = "forbidden"
         }
 
         // diagonals
@@ -82,7 +79,7 @@ export default {
         var diagRow = queen.row - 1;
         var diagCol = queen.col - 1;
         while (diagRow >= 0 && diagCol >= 0) {
-          x[diagRow][diagCol].class = "forbidden";
+          x[diagRow][diagCol] = "forbidden";
           diagRow--;
           diagCol--;
         }
@@ -91,7 +88,7 @@ export default {
         diagRow = queen.row + 1;
         diagCol = queen.col + 1;
         while (diagRow < this.dim && diagCol < this.dim) {
-          x[diagRow][diagCol].class = "forbidden";
+          x[diagRow][diagCol] = "forbidden";
           diagRow++;
           diagCol++;
         }
@@ -100,7 +97,7 @@ export default {
         diagRow = queen.row + 1;
         diagCol = queen.col - 1;
         while (diagRow < this.dim && diagCol >= 0) {
-          x[diagRow][diagCol].class = "forbidden";
+          x[diagRow][diagCol] = "forbidden";
           diagRow++;
           diagCol--;
         }
@@ -109,7 +106,7 @@ export default {
         diagRow = queen.row - 1;
         diagCol = queen.col + 1;
         while (diagRow >= 0 && diagCol < this.dim) {
-          x[diagRow][diagCol].class = "forbidden";
+          x[diagRow][diagCol] = "forbidden";
           diagRow--;
           diagCol++;
         }
@@ -118,7 +115,28 @@ export default {
       // update squares where queens are
       for (i = 0; i < this.queens.length; i++) {
         queen = this.queens[i]
-        x[queen.row][queen.col].class = "queen"
+        x[queen.row][queen.col] = "queen"
+      }
+
+      // check if user has solved the problem
+      if (this.solutions.length == 0 && this.queens.length == this.dim) {
+        var reachedSquares = 0;
+        for (i = 0; i < this.dim; i++) {
+          for (j = 0; j < this.dim; j++) {
+              if (x[i][j] != "empty") {
+                reachedSquares++;
+              }
+          }
+        }
+        if (reachedSquares == this.dim**2) {
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: "Congratulations! you solved the N-queens problem",
+            position: 'is-bottom-right',
+            type: 'is-success',
+            hasIcon: true
+          })
+        }
       }
 
       return x;
@@ -151,21 +169,22 @@ export default {
       var solveNQueens = (row) => {
           if (row == this.dim) {
             // all queens are well placed, add solution
-            console.log("Adding solution", colPlacement, colPlacement[0], colPlacement[1],  colPlacement[2], colPlacement[3])
             this.solutions.push(colPlacement.map(v => {
                 return v
             }))
-            console.log("solutions", this.solutions,)
             return
           }
           for (var col=0; col<this.dim; col++) {
+              // for each placed queen, check if they are reaching the col position
               if (colPlacement.every((c, r) => {
                   if (r >= row) {
                       return true
                   }
                   return [0, row-r].indexOf(Math.abs(c-col)) < 0
               })) {
+                // position not reached, place queen in this col for this row
                 colPlacement[row] = col
+                // calculate queen position for the next row
                 solveNQueens(row + 1)
               }
           }
@@ -198,7 +217,7 @@ export default {
       })
     },
     squareClick: function(row, col) {
-      var squareClass = this.squares[row][col].class;
+      var squareClass = this.squares[row][col];
 
       if (squareClass === "forbidden") {
         this.$buefy.notification.open({
@@ -259,7 +278,7 @@ export default {
   width: 90%;
   height: 70%;
   max-width: 80vh; 
-  max-height: 90vw; 
+  max-height: 80vw; 
   position: absolute;
 }
 
