@@ -10,7 +10,7 @@
     </b-field>
     <b-field >
         <p v-if="solutions.length>0">
-          showing solution {{solution}} of {{solutions.length}}
+          showing solution {{solution+1}} of {{solutions.length}} 
         </p>
         <b-button v-if="solutions.length>0" @click="prevSolution" :disabled="solution==0" icon-left="arrow-left"></b-button>
         <b-button v-if="solutions.length>0" @click="nextSolution" :disabled="solution==solutions.length-1" icon-left="arrow-right"></b-button>
@@ -137,8 +137,8 @@ export default {
           if (row == this.dim) {
             // all queens are well placed, add solution
             console.log("Adding solution", colPlacement, colPlacement[0], colPlacement[1],  colPlacement[2], colPlacement[3])
-            this.solutions.push(colPlacement.map((i,v) => {
-                return {row: i, col: v}
+            this.solutions.push(colPlacement.map(v => {
+                return v
             }))
             console.log("solutions", this.solutions,)
             return
@@ -178,7 +178,9 @@ export default {
       }
 
       // show first solution
-      this.queens = this.solutions[0]
+      this.queens = this.solutions[0].map((i,v) => {
+        return {row: i, col: v}
+      })
     },
     squareClick: function(row, col) {
       var squareClass = this.squares[row][col].class;
@@ -212,7 +214,9 @@ export default {
     },
     solution: function(val) {
       if (val >= 0 && val < this.solutions.length) {
-          this.queens = this.solutions[val]
+        this.queens = this.solutions[val].map((i,v) => {
+          return {row: i, col: v}
+        })
       }
     }
   }
