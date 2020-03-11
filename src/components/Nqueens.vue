@@ -274,6 +274,10 @@ export default {
   opacity: 0.8;
 }
 
+.hero-body {
+  align-items: flex-start !important;
+}
+
 .board {
   width: 90%;
   height: 70%;
@@ -289,6 +293,6 @@ table, td {
 }
 
 tr:nth-child(odd) td:nth-child(even), tr:nth-child(even) td:nth-child(odd) {
-	background-color: white;
+  background-color: white;
 }
 </style>
