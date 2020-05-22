@@ -1,24 +1,9 @@
 # nqueens
 
-## Project setup
-```
-npm install
-```
+A toy game to solve the n-queens problem
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+![nqueens](./doc/nqueens.png)
 
-### Compiles and minifies for production
+## Run
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+npm install && npm run serve
