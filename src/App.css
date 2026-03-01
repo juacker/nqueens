@@ -20,7 +20,7 @@ body {
   align-items: center;
   gap: 1.5rem;
   width: 100%;
-  max-width: 560px;
+  max-width: 720px;
 }
 
 .toolbar {
@@ -109,11 +109,18 @@ button:disabled {
 }
 
 .square.forbidden.light {
-  background: #f0ddd4;
+  background: #e8c4b8;
 }
 
 .square.forbidden.dark {
-  background: #c49882;
+  background: #c48a72;
+}
+
+.square.forbidden::after {
+  content: '·';
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.2);
+  line-height: 1;
 }
 
 .square.queen.light {
@@ -129,7 +136,7 @@ button:disabled {
 }
 
 .queen-icon {
-  font-size: min(4vw, 2.2rem);
+  font-size: min(5vw, 3rem);
   line-height: 1;
   color: #1a1a1a;
   user-select: none;
