@@ -10,8 +10,9 @@ body {
   color: #1a1a1a;
   display: flex;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem;
 }
 
 .app {
@@ -20,7 +21,7 @@ body {
   align-items: center;
   gap: 1.5rem;
   width: 100%;
-  max-width: 720px;
+  max-width: min(85vh, 720px);
 }
 
 .toolbar {
@@ -109,17 +110,17 @@ button:disabled {
 }
 
 .square.forbidden.light {
-  background: #e8c4b8;
+  background: #e6bfb0;
 }
 
 .square.forbidden.dark {
-  background: #c48a72;
+  background: #bf7e66;
 }
 
 .square.forbidden::after {
-  content: '·';
-  font-size: 1.2rem;
-  color: rgba(0, 0, 0, 0.2);
+  content: '×';
+  font-size: min(3vw, 1.4rem);
+  color: rgba(0, 0, 0, 0.18);
   line-height: 1;
 }
 
