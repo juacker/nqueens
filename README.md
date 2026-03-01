@@ -1,11 +1,12 @@
-# nqueens
+# N-Queens
 
-A toy game to solve the n-queens problem
+Interactive puzzle solver for the classic N-Queens problem. Place queens on the board manually or let it solve for you.
 
 **Try it live:** https://juacker.github.io/nqueens/
 
-![nqueens](./doc/nqueens.png)
+## Run locally
 
-## Run
 ```
-npm install && npm run serve
+npm install
+npm run dev
+```
